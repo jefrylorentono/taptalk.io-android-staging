@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -894,12 +895,22 @@ public class TapTalk implements LifecycleObserver {
     }
 
     public static void showTapTalkNotification(String instanceKey, TAPMessageModel tapMessageModel) {
-        new TAPNotificationManager.NotificationBuilder(appContext, instanceKey)
-                .setNotificationMessage(tapMessageModel)
-                .setSmallIcon(getClientAppIcon(instanceKey))
-                .setNeedReply(false)
-                .setOnClickAction(TapUIChatActivity.class)
-                .show();
+        Log.e("]]]]]", "showTapTalkNotification: " + instanceKey);
+        try {
+            new TAPNotificationManager.NotificationBuilder(appContext, instanceKey)
+                    .setNotificationMessage(tapMessageModel)
+                    .setSmallIcon(getClientAppIcon(instanceKey))
+                    .setNeedReply(false)
+                    .setOnClickAction(TapUIChatActivity.class)
+                    .show();
+        } catch (Exception e) {
+            new TAPNotificationManager.NotificationBuilder(appContext, instanceKey)
+                    .setNotificationMessage(tapMessageModel)
+                    .setSmallIcon(R.drawable.tap_ic_taptalk_logo)
+                    .setNeedReply(false)
+                    .setOnClickAction(TapUIChatActivity.class)
+                    .show();
+        }
     }
 
     public static void saveFirebaseToken(String token) {

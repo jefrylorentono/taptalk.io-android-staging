@@ -1,6 +1,7 @@
 package io.taptalk.TapTalk.Listener;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.Keep;
 
@@ -30,6 +31,7 @@ public abstract class TapListener implements TapTalkInterface {
 
     @Override
     public void onNotificationReceived(TAPMessageModel message) {
+        Log.e("]]]]]", "Show TapTalk Notification for instance " + instanceKey);
         TapTalk.showTapTalkNotification(instanceKey, message);
     }
 
