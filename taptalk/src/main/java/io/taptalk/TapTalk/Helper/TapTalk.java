@@ -886,6 +886,11 @@ public class TapTalk implements LifecycleObserver {
                     message);
         } catch (Exception e) {
 //            Log.e(TAG, "onMessageReceived: ", e);
+            TAPNotificationManager.getInstance(instanceKey).createAndShowBackgroundNotification(
+                    appContext,
+                    R.drawable.tap_ic_taptalk_logo,
+                    TapUIChatActivity.class,
+                    message);
             e.printStackTrace();
         }
     }
