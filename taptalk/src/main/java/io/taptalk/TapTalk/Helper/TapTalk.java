@@ -418,17 +418,17 @@ public class TapTalk implements LifecycleObserver {
                         }
                     }).start();
 
-                    new Thread(() -> TAPDataManager.getInstance(instanceKey).getMyContactListFromAPI(new TAPDefaultDataView<TAPContactResponse>() {
-                        @Override
-                        public void onSuccess(TAPContactResponse response) {
-                            List<TAPUserModel> userModels = new ArrayList<>();
-                            for (TAPContactModel contact : response.getContacts()) {
-                                userModels.add(contact.getUser().setUserAsContact());
-                            }
-                            TAPDataManager.getInstance(instanceKey).insertMyContactToDatabase(userModels);
-                            TAPContactManager.getInstance(instanceKey).updateUserData(userModels);
-                        }
-                    })).start();
+//                    new Thread(() -> TAPDataManager.getInstance(instanceKey).getMyContactListFromAPI(new TAPDefaultDataView<TAPContactResponse>() {
+//                        @Override
+//                        public void onSuccess(TAPContactResponse response) {
+//                            List<TAPUserModel> userModels = new ArrayList<>();
+//                            for (TAPContactModel contact : response.getContacts()) {
+//                                userModels.add(contact.getUser().setUserAsContact());
+//                            }
+//                            TAPDataManager.getInstance(instanceKey).insertMyContactToDatabase(userModels);
+//                            TAPContactManager.getInstance(instanceKey).updateUserData(userModels);
+//                        }
+//                    })).start();
 
                     TAPDataManager.getInstance(instanceKey).saveActiveUser(response.getUser());
                     TAPApiManager.getInstance(instanceKey).setLoggedOut(false);
