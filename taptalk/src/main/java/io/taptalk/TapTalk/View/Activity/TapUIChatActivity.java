@@ -702,7 +702,7 @@ public class TapUIChatActivity extends TAPBaseActivity {
             vm.setTappedMessageLocalID(getIntent().getStringExtra(JUMP_TO_MESSAGE));
         }
 
-        getInitialUnreadCount();
+//        getInitialUnreadCount();
 
         return null != vm.getMyUserModel() && (null != vm.getOtherUserModel() || (TYPE_PERSONAL != vm.getRoom().getRoomType()));
     }

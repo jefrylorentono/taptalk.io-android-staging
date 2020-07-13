@@ -952,7 +952,7 @@ public class TapUIRoomListFragment extends Fragment {
                 messageModels.add(roomModel);
                 vm.addRoomPointer(roomModel);
                 // Get unread count and unread mentions
-                TAPDataManager.getInstance(instanceKey).getUnreadCountPerRoom(entity.getRoomID(), dbListener);
+//                TAPDataManager.getInstance(instanceKey).getUnreadCountPerRoom(entity.getRoomID(), dbListener);
                 if (++count % limit == 0) {
                     vm.setRoomList(messageModels);
                     activity.runOnUiThread(() -> adapter.setItems(vm.getRoomList()));
