@@ -39,7 +39,6 @@ public class TAPMessageRepository {
     }
 
     public void delete(List<TAPMessageEntity> messageEntities, TAPDatabaseListener listener) {
-        Log.e(TAG, "delete: ");
         new Thread(() -> {
             messageDao.delete(messageEntities);
             listener.onDeleteFinished();
@@ -47,7 +46,6 @@ public class TAPMessageRepository {
     }
 
     public void deleteRoomMessageBeforeTimestamp(String roomID, long minimumTimestamp, TAPDatabaseListener listener) {
-        Log.e(TAG, "deleteRoomMessageBeforeTimestamp: ");
         new Thread(() -> {
             messageDao.deleteRoomMessageBeforeTimestamp(roomID, minimumTimestamp);
             listener.onDeleteFinished();
@@ -55,7 +53,6 @@ public class TAPMessageRepository {
     }
 
     public void insert(TAPMessageEntity message) {
-        Log.e(TAG, "insert: ");
         new InsertAsyncTask(messageDao).execute(message);
     }
 
@@ -74,7 +71,6 @@ public class TAPMessageRepository {
     }
 
     public void insert(List<TAPMessageEntity> messageEntities, boolean isClearSaveMessages) {
-        Log.e(TAG, "insert: ");
         new Thread(() -> {
             messageEntities.removeAll(Collections.singleton(null)); // Remove null objects from list
             if (messageEntities.isEmpty()) {
@@ -88,7 +84,6 @@ public class TAPMessageRepository {
     }
 
     public void insert(List<TAPMessageEntity> messageEntities, boolean isClearSaveMessages, TAPDatabaseListener listener) {
-        Log.e(TAG, "insert: ");
         new Thread(() -> {
             messageEntities.removeAll(Collections.singleton(null)); // Remove null objects from list
             if (messageEntities.isEmpty()) {
@@ -108,7 +103,6 @@ public class TAPMessageRepository {
     }
 
     public void getAllMessagesInRoom(String roomID, final TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getAllMessagesInRoom: ");
         new Thread(() -> {
             List<TAPMessageEntity> allMessages = messageDao.getAllMessagesInRoom(roomID);
             listener.onSelectFinished(allMessages);
@@ -116,7 +110,6 @@ public class TAPMessageRepository {
     }
 
     public void getMessageListDesc(final String roomID, final TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getMessageListDesc: ");
         new Thread(() -> {
             allMessageList = messageDao.getAllMessageListDesc(roomID);
             listener.onSelectFinished(allMessageList);
@@ -124,7 +117,6 @@ public class TAPMessageRepository {
     }
 
     public void getMessageListDesc(final String roomID, final TAPDatabaseListener listener, final long lastTimestamp) {
-        Log.e(TAG, "getMessageListDesc: ");
         new Thread(() -> {
             List<TAPMessageEntity> entities = messageDao.getAllMessageTimeStamp(lastTimestamp, roomID);
             listener.onSelectFinished(entities);
@@ -132,7 +124,6 @@ public class TAPMessageRepository {
     }
 
     public void getMessageListAsc(final String roomID, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getMessageListAsc: ");
         new Thread(() -> {
             try {
                 allMessageList = messageDao.getAllMessageListAsc(roomID);
@@ -144,7 +135,6 @@ public class TAPMessageRepository {
     }
 
     public void searchAllMessages(String keyword, final TAPDatabaseListener listener) {
-        Log.e(TAG, "searchAllMessages: ");
         new Thread(() -> {
             String queryKeyword = '%' + keyword
                     .replace("\\", "\\\\")
@@ -176,7 +166,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoomList(String myID, String username, List<TAPMessageEntity> saveMessages, boolean isCheckUnreadFirst, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getRoomList: ");
         new Thread(() -> {
             List<TAPMessageEntityWithUnreadCount> allRooms = messageDao.getAllRoomListWithUnreadCount(myID,
                     generateMentionFilter(username, 0),
@@ -215,7 +204,6 @@ public class TAPMessageRepository {
     }
 
     public void getAllUnreadMessagesFromRoom(String myID, String roomID, TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getAllUnreadMessagesFromRoom: ");
         new Thread(() -> {
             List<TAPMessageEntity> messageEntities = messageDao.getAllUnreadMessagesFromRoom(myID, roomID);
             listener.onSelectFinished(messageEntities);
@@ -223,7 +211,6 @@ public class TAPMessageRepository {
     }
 
     public void getAllUnreadMentionsFromRoom(String myID, String username, String roomID, TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getAllUnreadMentionsFromRoom: ");
         new Thread(() -> {
             // TODO: 023, 23 Apr 2020 ADD END OF STRING AND NEWLINE FILTER
             List<TAPMessageEntity> messageEntities = messageDao.getAllUnreadMentionsFromRoom(
@@ -243,7 +230,6 @@ public class TAPMessageRepository {
     }
 
     public void searchAllChatRooms(String myID, String username, String keyword, final TAPDatabaseListener listener) {
-        Log.e(TAG, "searchAllChatRooms: ");
         new Thread(() -> {
             String queryKeyword = '%' + keyword
                     .replace("\\", "\\\\")
@@ -272,7 +258,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoomMedias(Long lastTimestamp, String roomID, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getRoomMedias: ");
         new Thread(() -> {
             List<TAPMessageEntity> roomMedias;
             if (lastTimestamp == 0L) {
@@ -285,7 +270,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoomMediaMessageBeforeTimestamp(String roomID, long minimumTimestamp, final TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getRoomMediaMessageBeforeTimestamp: ");
         new Thread(() -> {
             List<TAPMessageEntity> messages = messageDao.getRoomMediaMessageBeforeTimestamp(roomID, minimumTimestamp);
             listener.onSelectFinished(messages);
@@ -293,7 +277,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoomMediaMessage(String roomID, final TAPDatabaseListener<TAPMessageEntity> listener) {
-        Log.e(TAG, "getRoomMediaMessage: ");
         new Thread(() -> {
             List<TAPMessageEntity> messages = messageDao.getRoomMediaMessage(roomID);
             listener.onSelectFinished(messages);
@@ -301,7 +284,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoom(String myID, TAPUserModel otherUserModel, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getRoom: ");
         new Thread(() -> {
             String roomID = TAPChatManager.getInstance(instanceKey).arrangeRoomId(myID, otherUserModel.getUserID());
             TAPMessageEntity room = messageDao.getRoom(roomID);
@@ -319,7 +301,6 @@ public class TAPMessageRepository {
     }
 
     public void getRoomList(String myID, String username, boolean isCheckUnreadFirst, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getRoomList: ");
         new Thread(() -> {
             List<TAPMessageEntityWithUnreadCount> allRooms = messageDao.getAllRoomListWithUnreadCount(myID,
                     generateMentionFilter(username, 0),
@@ -349,7 +330,6 @@ public class TAPMessageRepository {
     }
 
     public void getUnreadCountPerRoom(String myID, String username, String roomID, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getUnreadCountPerRoom: ");
         new Thread(() -> {
             int unreadCount = messageDao.getUnreadCount(myID, roomID);
             int mentionCount = messageDao.getAllUnreadMentionsFromRoom(
@@ -369,7 +349,6 @@ public class TAPMessageRepository {
     }
 
     public void getUnreadCount(String myID, final TAPDatabaseListener listener) {
-        Log.e(TAG, "getUnreadCount: ");
         new Thread(() -> {
             int unreadCount = messageDao.getUnreadCount(myID);
             listener.onCountedUnreadCount(unreadCount);
@@ -377,7 +356,6 @@ public class TAPMessageRepository {
     }
 
     public void getMinCreatedOfUnreadMessage(String myID, String roomID, final TAPDatabaseListener<Long> listener) {
-        Log.e(TAG, "getMinCreatedOfUnreadMessage: ");
         new Thread(() -> {
             TAPMessageEntity tempUnreadEntity = messageDao.getMinCreatedOfUnreadMessage(myID, roomID);
 
@@ -391,37 +369,30 @@ public class TAPMessageRepository {
     }
 
     public void delete(final String localID) {
-        Log.e(TAG, "delete: ");
         new Thread(() -> messageDao.delete(localID)).start();
     }
 
     public void deleteAllMessage() {
-        Log.e(TAG, "deleteAllMessage: ");
         new Thread(() -> messageDao.deleteAllMessage()).start();
     }
 
     public void updatePendingStatus() {
-        Log.e(TAG, "updatePendingStatus: ");
         new Thread(() -> messageDao.updatePendingStatus()).start();
     }
 
     public void updatePendingStatus(final String localID) {
-        Log.e(TAG, "updatePendingStatus: ");
         new Thread(() -> messageDao.updatePendingStatus(localID)).start();
     }
 
     public void updateFailedStatusToSending(final String localID) {
-        Log.e(TAG, "updateFailedStatusToSending: ");
         new Thread(() -> messageDao.updateFailedStatusToSending(localID)).start();
     }
 
     public void updateMessageAsRead(final String messageID) {
-        Log.e(TAG, "updateMessageAsRead: ");
         new Thread(() -> messageDao.updateMessageAsRead(messageID)).start();
     }
 
     public void updateMessagesAsRead(final List<String> messageIDs) {
-        Log.e(TAG, "updateMessagesAsRead: ");
         if (null == messageIDs || messageIDs.isEmpty()) {
             return;
         }
@@ -451,7 +422,6 @@ public class TAPMessageRepository {
     }
 
     public void deleteMessageByRoomId(final String roomId, TAPDatabaseListener listener) {
-        Log.e(TAG, "deleteMessageByRoomId: ");
         new Thread(() -> {
             messageDao.deleteMessageByRoomId(roomId);
             listener.onDeleteFinished();
