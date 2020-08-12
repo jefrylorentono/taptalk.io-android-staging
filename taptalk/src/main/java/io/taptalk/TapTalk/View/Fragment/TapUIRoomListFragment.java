@@ -187,6 +187,7 @@ public class TapUIRoomListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         TAPBroadcastManager.unregister(activity, roomListBroadcastReceiver);
+        TAPDataManager.getInstance(instanceKey).unsubscribeRoomListAndUnreadApi();
     }
 
     @Override
@@ -879,8 +880,7 @@ public class TapUIRoomListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                // TODO: 27/07/20 FIX HERE --> Check flow if this code is needed!
-//                TAPContactManager.getInstance(instanceKey).updateUserData(userModels);
+                TAPContactManager.getInstance(instanceKey).updateUserData(userModels);
 
                 if (null != updateProfileSystemMessage) {
                     // Update room detail if update room system message exists in API result
@@ -890,6 +890,11 @@ public class TapUIRoomListFragment extends Fragment {
                 // Update status to delivered
                 if (deliveredMessages.size() > 0) {
                     TAPMessageStatusManager.getInstance(instanceKey).updateMessageStatusToDelivered(deliveredMessages);
+                }
+
+                // Get updated other user data from API
+                if (userIds.size() > 0) {
+                    TAPDataManager.getInstance(instanceKey).getMultipleUsersByIdFromApi(userIds, getMultipleUserView);
                 }
 
                 // Save message to database
@@ -928,15 +933,15 @@ public class TapUIRoomListFragment extends Fragment {
         }
     };
 
-//    private TAPDefaultDataView<TAPGetMultipleUserResponse> getMultipleUserView = new TAPDefaultDataView<TAPGetMultipleUserResponse>() {
-//        @Override
-//        public void onSuccess(TAPGetMultipleUserResponse response) {
-//            if (null == response || response.getUsers().isEmpty()) {
-//                return;
-//            }
-//            new Thread(() -> TAPContactManager.getInstance(instanceKey).updateUserData(response.getUsers())).start();
-//        }
-//    };
+    private TAPDefaultDataView<TAPGetMultipleUserResponse> getMultipleUserView = new TAPDefaultDataView<TAPGetMultipleUserResponse>() {
+        @Override
+        public void onSuccess(TAPGetMultipleUserResponse response) {
+            if (null == response || response.getUsers().isEmpty()) {
+                return;
+            }
+            new Thread(() -> TAPContactManager.getInstance(instanceKey).updateUserData(response.getUsers())).start();
+        }
+    };
 
     private TAPDatabaseListener<TAPMessageEntity> dbListener = new TAPDatabaseListener<TAPMessageEntity>() {
 //        @Deprecated
